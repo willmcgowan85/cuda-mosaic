@@ -71,20 +71,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes.cs" />
     <Compile Include="CUDA.cs" />
-    <Compile Include="Grid.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Img.cs" />
     <Compile Include="Pixel.cs" />
     <Compile Include="Placement.cs" />
     <Compile Include="Poster.cs" />
-    <Compile Include="ProcessorAdvanced.cs" />
+    <Compile Include="ProcessorDemo.cs" />
     <Compile Include="ProcessorBase.cs" />
-    <Compile Include="ProcessorMultiple.cs" />
-    <Compile Include="ProcessorSimple.cs" />
-    <Compile Include="ProcessorWeights.cs" />
-    <Compile Include="ProcessorWeightsMultiple.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />

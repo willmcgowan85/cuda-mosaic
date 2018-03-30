@@ -1,14 +1,9 @@
 ﻿using ColorMine.ColorSpaces;
 using Colourful;
 using Colourful.Conversion;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MTG
+namespace MosaicBuilder
 {
     class Pixel
     {
@@ -27,11 +22,6 @@ namespace MTG
             b = (byte)_b;
             c = (byte)_c;
         }
-
-        //public int AsInt()
-        //{
-        //    return (a << 16) + (b << 8) + c;
-        //}
 
         public int AsInt(ColorSpace cs)
         {
@@ -53,7 +43,6 @@ namespace MTG
                 case ColorSpace.XYZ:
                     var xyz = new ColourfulConverter().ToXYZ(rgb);
                     return ((byte)(xyz.X * 256) << 16) + ((byte)(xyz.Y * 256) << 8) + (byte)(xyz.Z * 256);
-
                 case ColorSpace.CMY:
                     var cmy = new Rgb(a, b, c).To<Cmy>();
                     return ((byte)(cmy.C * 256) << 16) + ((byte)(cmy.M * 256) << 8) + (byte)(cmy.Y * 256);
@@ -68,8 +57,6 @@ namespace MTG
                     return (a << 16) + (b << 8) + c;
             }
         }
-
-
     }
 
     enum ColorSpace

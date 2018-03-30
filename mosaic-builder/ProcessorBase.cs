@@ -1,31 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MTG
+namespace MosaicBuilder
 {
     abstract class ProcessorBase
     {
         public abstract void CreateMosaic(Settings settings);
-
-        private int? GetScore(Img img1, Img img2, int break_out)
-        {
-            var score = 0;
-            for (var i = 0; i < img1.pixels.Count; i++)
-            {
-                score += (img1.pixels[i].a - img2.pixels[i].a) * (img1.pixels[i].a - img2.pixels[i].a)
-                    + (img1.pixels[i].b - img2.pixels[i].b) * (img1.pixels[i].b - img2.pixels[i].b)
-                    + (img1.pixels[i].c - img2.pixels[i].c) * (img1.pixels[i].c - img2.pixels[i].c);
-                if (score >= break_out)
-                {
-                    return null;
-                }
-            }
-            return score;
-        }
-
+        
         internal float[] GetWeights(string weightsStr)
         {
             try
@@ -82,6 +62,7 @@ namespace MTG
         OffsetTile,
         Multiple,
         //Dither,
-        WeightsMultiple
+        WeightsMultiple,
+        Demo
     }
 }

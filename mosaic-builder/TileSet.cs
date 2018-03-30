@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MTG
+namespace MosaicBuilder
 {
-
     class TileSet
     {
         public List<Img> tiles;
+
         public TileSet(string folder)
         {
             var tiles = new ConcurrentBag<Img>();

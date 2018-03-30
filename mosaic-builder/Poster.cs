@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTG
+namespace MosaicBuilder
 {
 
     class Poster
@@ -72,15 +72,16 @@ namespace MTG
             return bitmap.Clone(new Rectangle(left, top, right - left, bottom - top), bitmap.PixelFormat);
         }
 
-        internal void SetResults(List<Tuple<int, int>> results)
+        internal void SetResults(List<int> results, Settings settings)
         {
             int tilewidth = results.Count / rows / cols;
             foreach(var c in Enumerable.Range(0, cols))
             {
                 foreach(var r in Enumerable.Range(0, rows))
                 {
+                    var imageindex = 0;
                     scoreslist[c][r] = new List<Tuple<int, int>>();
-                    scoreslist[c][r].AddRange(results.GetRange((r * cols + c) * tilewidth, tilewidth).OrderBy(e=>e.Item1));
+                    scoreslist[c][r].AddRange(results.GetRange((r * cols + c) * tilewidth, tilewidth).Select(e => new Tuple<int, int>(e, imageindex++)).OrderBy(e => e.Item1).Take(settings.dither[0]));
                 }
             }
         }

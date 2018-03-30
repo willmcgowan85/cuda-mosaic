@@ -4,6 +4,6 @@
     <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>C:\MTGArt\Input\twilight.jpg C:\MTGArt\Output\twilight /f C:\MTGArt\whole_small /d 10,5,5,1 /s 256 /cs RGB /p advanced</StartArguments>
+    <StartArguments>C:\MTGArt\Input\twilight.jpg C:\MTGArt\Output\twilight /f C:\MTGArt\whole /s 64 /d 10,0,50,5 /cs RGB /p demo</StartArguments>
   </PropertyGroup>
 </Project>
