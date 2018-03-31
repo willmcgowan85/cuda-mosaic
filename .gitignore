@@ -1,9 +1,8 @@
 *.pdb
-/CUDA_9_0_176/x64/Debug
-/CUDA_9_0_176/x64/Release
 /CUDA_9_0_176/x64
 /mosaic-builder/bin
 /mosaic-builder/obj
 /packages
 /x64
-/.vs
+.*/
+ 
