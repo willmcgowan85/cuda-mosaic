@@ -2,7 +2,7 @@
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
-namespace MosaicBuilder
+namespace mosaic_builder
 {
     class Helpers
     {

@@ -1,7 +1,7 @@
 ﻿using Args;
 using System.Collections.Generic;
 
-namespace MosaicBuilder
+namespace mosaic_builder
 {
     class Settings
     {

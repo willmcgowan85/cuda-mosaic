@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MosaicBuilder
+namespace mosaic_builder
 {
     class ProcessorDemo : ProcessorBase
     {
@@ -48,6 +48,7 @@ namespace MosaicBuilder
             Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Done Converting");
             List<int> results = null;
             results = CUDA.Run(tiledata, griddata, pixelsPerTile, settings);
+            //results = CPU.Run(tiledata, griddata, pixelsPerTile, settings);
             poster.SetResults(results, settings);
 
             for (var pow = settings.dither[1]; pow <= settings.dither[2]; pow += settings.dither[3])

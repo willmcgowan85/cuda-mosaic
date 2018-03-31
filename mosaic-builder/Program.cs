@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MosaicBuilder
+namespace mosaic_builder
 {
     class Program
     {

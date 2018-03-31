@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CPU.cs" />
     <Compile Include="CUDA.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Img.cs" />

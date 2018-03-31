@@ -3,7 +3,7 @@ using Colourful;
 using Colourful.Conversion;
 using System.Drawing;
 
-namespace MosaicBuilder
+namespace mosaic_builder
 {
     class Pixel
     {

@@ -1,4 +1,4 @@
-﻿namespace MosaicBuilder
+﻿namespace mosaic_builder
 {
     class Placement
     {

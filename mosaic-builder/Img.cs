@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 
-namespace MosaicBuilder
+namespace mosaic_builder
 {
     class Img
     {

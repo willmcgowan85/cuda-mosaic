@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MosaicBuilder
+namespace mosaic_builder
 {
 
     class Poster
