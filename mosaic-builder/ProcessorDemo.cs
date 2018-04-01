@@ -10,8 +10,8 @@ namespace mosaic_builder
     {
         public override void CreateMosaic(Settings settings)
         {
-            var tilewidth = 60;
-            var tileheight = 44;
+            var tilewidth = 15;
+            var tileheight = 11;
             var pixelsPerTile = tilewidth * tileheight;
             settings.weights = GetWeights(settings.weightsStr);
             settings.dither = GetDither(settings.ditherStr);
@@ -46,9 +46,8 @@ namespace mosaic_builder
             }
 
             Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Done Converting");
-            List<int> results = null;
-            results = CUDA.Run(tiledata, griddata, pixelsPerTile, settings);
-            //results = CPU.Run(tiledata, griddata, pixelsPerTile, settings);
+            var results = CUDA.Run(tiledata, griddata, pixelsPerTile, settings);
+            //var results = CPU.Run(tiledata, griddata, pixelsPerTile, settings);
             poster.SetResults(results, settings);
 
             for (var pow = settings.dither[1]; pow <= settings.dither[2]; pow += settings.dither[3])

@@ -72,12 +72,26 @@ namespace mosaic_builder
             return bitmap.Clone(new Rectangle(left, top, right - left, bottom - top), bitmap.PixelFormat);
         }
 
-        internal void SetResults(List<int> results, Settings settings)
+        internal void SetResults(int[] results, Settings settings)
         {
-            int tilewidth = results.Count / rows / cols;
+            int tilewidth = results.Length / rows / cols;
             foreach(var c in Enumerable.Range(0, cols))
             {
                 foreach(var r in Enumerable.Range(0, rows))
+                {
+                    var imageindex = 0;
+                    scoreslist[c][r] = new List<Tuple<int, int>>();
+                    scoreslist[c][r].AddRange(results.Skip((r * cols + c) * tilewidth).Take(tilewidth).Select(e => new Tuple<int, int>(e, imageindex++)).OrderBy(e => e.Item1).Take(settings.dither[0]));
+                }
+            }
+        }
+
+        internal void SetResults(List<int> results, Settings settings)
+        {
+            int tilewidth = results.Count / rows / cols;
+            foreach (var c in Enumerable.Range(0, cols))
+            {
+                foreach (var r in Enumerable.Range(0, rows))
                 {
                     var imageindex = 0;
                     scoreslist[c][r] = new List<Tuple<int, int>>();

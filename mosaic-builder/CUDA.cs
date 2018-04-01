@@ -3,6 +3,7 @@ using ManagedCuda.BasicTypes;
 using ManagedCuda.VectorTypes;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 
@@ -12,16 +13,17 @@ namespace mosaic_builder
     {
         public static List<int> Run(int[] tiledata, int[] griddata, int pixelsPerTile, Settings settings)
         {
-            var list = new List<int>();
+            //var list = new List<int>();
+            int[] scores = null;
 
-            var folder = @"..\..\..\CUDA_9_0_176\x64\Debug\";
+            var folder = ConfigurationManager.AppSettings["CudaFolder"];
 
             try
             {
                 CudaContext ctx = new CudaContext(settings.gpu);
-                CUmodule cumodule = ctx.LoadModule(folder + "kernel.ptx");
+                CUmodule cumodule = ctx.LoadModule(folder + ConfigurationManager.AppSettings["CudaFileName"]);
 
-                var kernel = new CudaKernel("_Z6kernelPKiS0_iiiPi", cumodule, ctx);
+                var kernel = new CudaKernel(ConfigurationManager.AppSettings["CudaMethodName"], cumodule, ctx);
 
                 var comparecount = (griddata.Count() / pixelsPerTile) * (tiledata.Count() / pixelsPerTile);
                 var threads = settings.threads > 0 && settings.threads < kernel.MaxThreadsPerBlock ? settings.threads : kernel.MaxThreadsPerBlock;
@@ -42,12 +44,12 @@ namespace mosaic_builder
                 Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Kernel Done, {resultk / 1000}");
 
                 Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Copying data to Host");
-                var scores = new int[comparecount];
+                scores = new int[comparecount];
                 scores_d.CopyToHost(scores);
 
                 Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Returning Results");
                 var sb = new StringBuilder();
-                list.AddRange(scores);
+                //list.AddRange(scores);
 
                 ctx.Dispose();
             }
@@ -55,7 +57,7 @@ namespace mosaic_builder
             {
                 Console.WriteLine($"{e.Message}");
             }
-            return list;
+            return scores.ToList();
         }
     }
 }

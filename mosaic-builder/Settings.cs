@@ -12,7 +12,7 @@ namespace mosaic_builder
         public string outputfolder { get; set; }
 
         [ArgsMemberSwitch(new string[] { "p" })]
-        public ProcessType ProcessorStr { get; set; } = ProcessType.Simple;
+        public ProcessType ProcessorStr { get; set; } = ProcessType.Demo;
 
         [ArgsMemberSwitch(new string[] { "f" })]
         public string FolderStr { get; set; }

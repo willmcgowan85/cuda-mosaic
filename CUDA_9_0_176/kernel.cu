@@ -1,11 +1,10 @@
 #include "cuda_runtime.h"
-#include "math.h"
 
 __device__ int pixel_diff(int a, int b)
 {
-	return (int) ((float)(abs((16711680 & a) - (16711680 & b)) >> 16)
-		+ (float)abs(((65280 & a) - (65280 & b)) >> 8)
-		+ (float)abs((255 & a) - (255 & b)));
+	return (((16711680 & a) - (16711680 & b)) >> 16) * (((16711680 & a) - (16711680 & b)) >> 16)
+		+ (((65280 & a) - (65280 & b)) >> 8) * (((65280 & a) - (65280 & b)) >> 8)
+		+ ((255 & a) - (255 & b)) * ((255 & a) - (255 & b));
 }
 
 __global__ void kernel(const int* tiles, const int* grid, const int tilecount, const int gridcount, const int tilewidth, int* scores)
