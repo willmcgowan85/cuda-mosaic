@@ -227,7 +227,6 @@ namespace mosaic_builder
                             bestscore = results[i];
                         }
                     }
-                    //var best = results.GetRange(, tiles.tiles.Count).Select(e => new Tuple<int, int>(e, imageindex++)).OrderBy(e => e.Item1).First();
                     PlaceImage(new Placement()
                     {
                         row = r,
