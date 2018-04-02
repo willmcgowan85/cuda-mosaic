@@ -26,7 +26,8 @@ namespace mosaic_builder
                 var kernel = new CudaKernel(ConfigurationManager.AppSettings["CudaMethodName"], cumodule, ctx);
 
                 var comparecount = (griddata.Count() / pixelsPerTile) * (tiledata.Count() / pixelsPerTile);
-                var threads = settings.threads > 0 && settings.threads < kernel.MaxThreadsPerBlock ? settings.threads : kernel.MaxThreadsPerBlock;
+                //var threads = settings.threads > 0 && settings.threads < kernel.MaxThreadsPerBlock ? settings.threads : kernel.MaxThreadsPerBlock;
+                var threads = kernel.MaxThreadsPerBlock;
                 var blocks = comparecount / threads + 1;
 
                 var maxgrids = ctx.GetDeviceInfo().MaxGridDim;

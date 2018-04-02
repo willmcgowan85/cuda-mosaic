@@ -32,64 +32,81 @@ namespace mosaic_builder
             });
 
             Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Converting Poster");
-            var griddata = new int[pixelsPerTile * poster.cols * poster.rows];
-            for (var r = 0; r < poster.rows; r++)
+            //var griddata = new int[pixelsPerTile * poster.cols * poster.rows];
+            //for (var r = 0; r < poster.rows; r++)
+            //{
+            //    for (var c = 0; c < poster.cols; c++)
+            //    {
+            //        var data = Helpers.GetArray(poster.GetSubImage(c, r, 1), settings.colorspace);
+            //        for (var d = 0; d < data.Length; d++)
+            //        {
+            //            griddata[(r * poster.cols + c) * data.Length + d] = data[d];
+            //        }
+            //    }
+            //}
+
+            var groupcount = poster.GetGroupsCount(settings);
+            Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Total Groups: {groupcount}");
+            for (var group = 0; group < groupcount; group++)
             {
-                for (var c = 0; c < poster.cols; c++)
+                Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Starting Group: {group}");
+                var griddata = poster.GetGridData(group, settings);
+                List<int> results = null;
+                if(settings.gpu == -1)
                 {
-                    var data = Helpers.GetArray(poster.GetSubImage(c, r, 1), settings.colorspace);
-                    for (var d = 0; d < data.Length; d++)
-                    {
-                        griddata[(r * poster.cols + c) * data.Length + d] = data[d];
-                    }
+                    results = CPU.Run(tiledata, griddata, pixelsPerTile, settings);
                 }
+                else
+                {
+                    results = CUDA.Run(tiledata, griddata, pixelsPerTile, settings);
+                }
+                poster.SetResults(results, group, settings, tiles, pixelsPerTile);
+                Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Done Group: {group}");
             }
 
-            Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Done Converting");
-            var results = CUDA.Run(tiledata, griddata, pixelsPerTile, settings);
-            //var results = CPU.Run(tiledata, griddata, pixelsPerTile, settings);
-            poster.SetResults(results, settings);
+            //Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Done Converting");
 
-            for (var pow = settings.dither[1]; pow <= settings.dither[2]; pow += settings.dither[3])
-            {
-                Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Placing Tiles");
-                var rng = new Random();
-                for (var r = 0; r < poster.rows; r++)
-                {
-                    for (var c = 0; c < poster.cols; c++)
-                    {
-                        var tile = 0;
-                        if (pow > 0)
-                        {
-                            var maxrand = 0.0d;
-                            for (var t = 0; t < settings.dither[0]; t++)
-                            {
-                                maxrand += 1f / Math.Pow(poster.scoreslist[c][r][t].Item1, pow);
-                            }
-                            var rand = rng.NextDouble() * maxrand;
-                            for (var t = 0; t < settings.dither[0]; t++)
-                            {
-                                rand -= 1f / Math.Pow(poster.scoreslist[c][r][t].Item1, pow);
-                                if (rand <= 0)
-                                {
-                                    tile += t;
-                                    break;
-                                }
-                            }
-                        }
-                        poster.PlaceImage(new Placement() {
-                            row = r,
-                            col = c,
-                            size = 1,
-                            img = tiles.tiles[poster.scoreslist[c][r][tile].Item2],
-                            score = poster.scoreslist[c][r][tile].Item1
-                        }, true);
-                    }
-                }
-                var filename = $"{Path.GetFileNameWithoutExtension(settings.SourceImage)}_{settings.size}_{settings.colorspace}_{pow}";
+            //for (var pow = settings.dither[1]; pow <= settings.dither[2]; pow += settings.dither[3])
+            //{
+            //    Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Placing Tiles");
+            //    var rng = new Random();
+            //    for (var r = 0; r < poster.rows; r++)
+            //    {
+            //        for (var c = 0; c < poster.cols; c++)
+            //        {
+            //            var tile = 0;
+            //            if (pow > 0)
+            //            {
+            //                var maxrand = 0.0d;
+            //                for (var t = 0; t < settings.dither[0]; t++)
+            //                {
+            //                    maxrand += 1f / Math.Pow(poster.scoreslist[c][r][t].Item1, pow);
+            //                }
+            //                var rand = rng.NextDouble() * maxrand;
+            //                for (var t = 0; t < settings.dither[0]; t++)
+            //                {
+            //                    rand -= 1f / Math.Pow(poster.scoreslist[c][r][t].Item1, pow);
+            //                    if (rand <= 0)
+            //                    {
+            //                        tile += t;
+            //                        break;
+            //                    }
+            //                }
+            //            }
+            //            poster.PlaceImage(new Placement() {
+            //                row = r,
+            //                col = c,
+            //                size = 1,
+            //                img = tiles.tiles[poster.scoreslist[c][r][tile].Item2],
+            //                score = poster.scoreslist[c][r][tile].Item1
+            //            }, true);
+            //        }
+            //    }
+                var filename = $"{Path.GetFileNameWithoutExtension(settings.SourceImage)}_{settings.size}_{settings.colorspace}";
                 Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Exporting {filename}");
                 poster.Export(filename, settings.outputfolder);
-            }
-        }
+            Console.ReadLine();
+            //}
     }
+}
 }

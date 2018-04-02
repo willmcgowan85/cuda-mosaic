@@ -4,9 +4,9 @@
     <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>C:\MTGArt\Input\overwatch.jpg C:\MTGArt\Output\overwatch /f C:\MTGArt\quarter_small /s 92 /d 10,0,20,20 /cs RGB /p demo</StartArguments>
+    <StartArguments>C:\MTGArt\Input\overwatch.jpg C:\MTGArt\Output\overwatch /f C:\MTGArt\quarter_small /s 128 /gs 500</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <StartArguments>C:\MTGArt\Input\overwatch.jpg C:\MTGArt\Output\overwatch /f C:\MTGArt\quarter_small /s 64</StartArguments>
+    <StartArguments>C:\MTGArt\Input\overwatch.jpg C:\MTGArt\Output\overwatch /f C:\MTGArt\quarter_small /s 256 /gs 500</StartArguments>
   </PropertyGroup>
 </Project>

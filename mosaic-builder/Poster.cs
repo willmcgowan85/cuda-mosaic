@@ -88,14 +88,14 @@ namespace mosaic_builder
 
         internal void SetResults(List<int> results, Settings settings)
         {
-            int tilewidth = results.Count / rows / cols;
+            int tilepixels = results.Count / rows / cols;
             foreach (var c in Enumerable.Range(0, cols))
             {
                 foreach (var r in Enumerable.Range(0, rows))
                 {
                     var imageindex = 0;
                     scoreslist[c][r] = new List<Tuple<int, int>>();
-                    scoreslist[c][r].AddRange(results.GetRange((r * cols + c) * tilewidth, tilewidth).Select(e => new Tuple<int, int>(e, imageindex++)).OrderBy(e => e.Item1).Take(settings.dither[0]));
+                    scoreslist[c][r].AddRange(results.GetRange((r * cols + c) * tilepixels, tilepixels).Select(e => new Tuple<int, int>(e, imageindex++)).OrderBy(e => e.Item1).Take(settings.dither[0]));
                 }
             }
         }
@@ -179,5 +179,58 @@ namespace mosaic_builder
             }
             File.WriteAllText(filename + ".csv", sb.ToString());
         }
+
+        public int GetGroupsCount(Settings settings)
+        {
+            return (int)Math.Ceiling((float)rows * cols / settings.groupsize);
+        }
+
+        public int[] GetGridData(int group, Settings settings)
+        {
+            var griddata = new List<int>();
+            var minI = settings.groupsize * group;
+            for (var r = 0; r < rows; r++)
+            {
+                for (var c = 0; c < cols; c++)
+                {
+                    var i = r * cols + c;
+                    if (minI <= i && i < minI + settings.groupsize)
+                    {
+                        var data = Helpers.GetArray(GetSubImage(c, r, 1), settings.colorspace);
+                        for (var d = 0; d < data.Length; d++)
+                        {
+                            griddata.Add(data[d]);
+                        }
+                    }
+                }
+            }
+
+            return griddata.ToArray();
+        }
+
+        public void SetResults(List<int> results, int group, Settings settings, TileSet tiles, int pixelsPerTile)
+        {
+            var minI = settings.groupsize * group;
+            for (var i = 0; i < settings.groupsize; i++)
+            {
+                var tile = minI + i;
+                var r = tile / cols;
+                var c = tile % cols;
+                if (r < rows && c < cols)
+                {
+                    var imageindex = 0;
+                    var best = results.GetRange(i * tiles.tiles.Count, tiles.tiles.Count).Select(e => new Tuple<int, int>(e, imageindex++)).OrderBy(e => e.Item1).First();
+                    PlaceImage(new Placement()
+                    {
+                        row = r,
+                        col = c,
+                        size = 1,
+                        score = best.Item1,
+                        img = tiles.tiles[best.Item2],
+                    });
+                }
+            }
+        }
+
     }
 }

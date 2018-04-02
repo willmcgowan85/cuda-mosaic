@@ -44,7 +44,7 @@ namespace mosaic_builder
 
         public float[] weights { get; set; } = new float[] { 1, 1, 1 };
 
-        [ArgsMemberSwitch(new string[] { "t" })]
-        public int threads { get; set; } = -1;
+        [ArgsMemberSwitch(new string[] { "gs" })]
+        public int groupsize { get; set; } = -1;
     }
 }
