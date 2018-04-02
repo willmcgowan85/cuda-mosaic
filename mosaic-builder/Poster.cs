@@ -211,22 +211,30 @@ namespace mosaic_builder
         public void SetResults(List<int> results, int group, Settings settings, TileSet tiles, int pixelsPerTile)
         {
             var minI = settings.groupsize * group;
-            for (var i = 0; i < settings.groupsize; i++)
+            for (var tile = 0; tile < settings.groupsize; tile++)
             {
-                var tile = minI + i;
-                var r = tile / cols;
-                var c = tile % cols;
+                var r = (minI + tile) / cols;
+                var c = (minI + tile) % cols;
                 if (r < rows && c < cols)
                 {
-                    var imageindex = 0;
-                    var best = results.GetRange(i * tiles.tiles.Count, tiles.tiles.Count).Select(e => new Tuple<int, int>(e, imageindex++)).OrderBy(e => e.Item1).First();
+                    var bestindex = -1;
+                    var bestscore = int.MaxValue;
+                    for (var i = tile * tiles.tiles.Count; i < (tile + 1) * tiles.tiles.Count; i++)
+                    {
+                        if(results[i] < bestscore)
+                        {
+                            bestindex = i - tile * tiles.tiles.Count;
+                            bestscore = results[i];
+                        }
+                    }
+                    //var best = results.GetRange(, tiles.tiles.Count).Select(e => new Tuple<int, int>(e, imageindex++)).OrderBy(e => e.Item1).First();
                     PlaceImage(new Placement()
                     {
                         row = r,
                         col = c,
                         size = 1,
-                        score = best.Item1,
-                        img = tiles.tiles[best.Item2],
+                        score = bestscore,
+                        img = tiles.tiles[bestindex],
                     });
                 }
             }

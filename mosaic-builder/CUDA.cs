@@ -33,22 +33,22 @@ namespace mosaic_builder
                 var maxgrids = ctx.GetDeviceInfo().MaxGridDim;
                 var cores = (int)maxgrids.x;
                 kernel.GridDimensions = new dim3((uint)(blocks > cores ? cores : blocks), (uint)(blocks > cores ? blocks / cores + 1 : 1), 1);
-                Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - dim = {threads}, {kernel.GridDimensions}");
+                //Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - dim = {threads}, {kernel.GridDimensions}");
                 kernel.BlockDimensions = threads;
 
                 CudaDeviceVariable<int> grid_d = griddata;
                 CudaDeviceVariable<int> tiles_d = tiledata;
                 CudaDeviceVariable<int> scores_d = new CudaDeviceVariable<int>(comparecount);
 
-                Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Kernel Started");
-                var resultk = kernel.Run(tiles_d.DevicePointer, grid_d.DevicePointer, tiledata.Count() / pixelsPerTile, griddata.Count() / pixelsPerTile, pixelsPerTile, scores_d.DevicePointer);
-                Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Kernel Done, {resultk / 1000}");
+                //Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Kernel Started");
+                Timer.kernel += kernel.Run(tiles_d.DevicePointer, grid_d.DevicePointer, tiledata.Count() / pixelsPerTile, griddata.Count() / pixelsPerTile, pixelsPerTile, scores_d.DevicePointer);
+                //Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Kernel Done, {Timer.kernel / 1000}");
 
-                Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Copying data to Host");
+                //Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Copying data to Host");
                 scores = new int[comparecount];
                 scores_d.CopyToHost(scores);
 
-                Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Returning Results");
+                //Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Returning Results");
                 var sb = new StringBuilder();
                 //list.AddRange(scores);
 

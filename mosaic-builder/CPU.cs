@@ -15,7 +15,7 @@ namespace mosaic_builder
             var scores = new int[tilecount * gridcount];
 
             var start = DateTime.Now;
-            Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - CPU Started");
+            //Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - CPU Started");
             var indexes = Enumerable.Range(0, tilecount * gridcount);
             Parallel.ForEach(indexes, index =>
             {
@@ -34,8 +34,8 @@ namespace mosaic_builder
                     scores[index] = score;
                 }
             });
-            var timer = (DateTime.Now - start).TotalMilliseconds;
-            Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Kernel Done, {timer / 1000}");
+            Timer.kernel += (DateTime.Now - start).TotalMilliseconds;
+            //Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} - Kernel Done, {timer / 1000}");
 
             return scores.ToList();
         }
