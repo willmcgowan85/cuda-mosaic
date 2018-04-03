@@ -1,5 +1,5 @@
 # cuda-mosaic
-## Mosaic Image Builder 
+## Image Mosaic Builder 
 This project shows how to create an image mosaic using a source folder of small images of the same size while leveraging the power of a CUDA enabled GPU to do all of the hard comparison work. The console app is programmed using C# and the .NET Framework, but the GPU kernel is done with C++.
 
 ### Pre-Requisites:
