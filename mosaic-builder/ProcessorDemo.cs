@@ -47,7 +47,7 @@ namespace mosaic_builder
                 start = DateTime.Now;
                 if (settings.gpu == -1)
                 {
-                    results = CPU.Run(tiledata, griddata, pixelsPerTile, settings);
+                    results = CPU.Run(tiledata, griddata, pixelsPerTile);
                 }
                 else
                 {
